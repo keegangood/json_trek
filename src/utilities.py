@@ -24,7 +24,7 @@ def fetch_category_items(category, pages):
     return response
 
 
-print(fetch_category_items("common/entity", 1))
+print(fetch_category_items("astronomicalObject", 1))
 
 
 def write_category_to_file(category_name, category_list):

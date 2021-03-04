@@ -1,11 +1,19 @@
 import json
 from random import choice as random_choice, random
-from utilities import words
+from all_words import all_words
 from species import species
-from klingon import klingon
+from klingon_words import klingon_words
 
 
 class DummyTrek:
+    """
+    Star-Trek-themed dummy data generator.
+
+    from DummyTrek import DummyTrek
+
+    trek = DummyTrek()
+    """
+
     VALID_FIELDS = [
         "username",
         "email",
@@ -27,7 +35,7 @@ class DummyTrek:
 
     def get_username(self) -> str:
         """Return an adjective and a noun in camelCase, representing a username"""
-        return random_choice(species) + random_choice(words["nouns"]).capitalize()
+        return random_choice(species) + random_choice(all_words["nouns"]).capitalize()
 
     def ipsum(self, n: int = 30, lang: str = "klingon") -> str:
         """Return a string of n words from specified language (lang)"""
@@ -38,7 +46,7 @@ class DummyTrek:
             words = klingon_words
         text = ""
         for i in range(n):
-            text += random_choice(klingon_words)
+            text += random_choice(words)
 
             # the first word should be titleized
             if len(text.split(" ")) == 1:
@@ -60,9 +68,9 @@ class DummyTrek:
                 # if punctuation was added,
                 # titleize the next word
                 if chance < 0.4:
-                    text += random_choice(words["klingon"]).title()
+                    text += random_choice(words).title()
                 else:
-                    text += random_choice(words["klingon"])
+                    text += random_choice(words)
 
                 # The final character should be !
                 if i == n - 1:

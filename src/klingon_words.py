@@ -1,4 +1,4 @@
-klingon = [
+klingon_words = [
     "pey",
     "chong",
     "pov",
