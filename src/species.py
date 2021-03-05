@@ -82,7 +82,7 @@ species = [
     "Kyrian",
     "Kraylor",
     "Norvalen",
-    "Tak Tak",
+    "TakTak",
     "Benkaran",
     "Caatati",
     "Kradin",

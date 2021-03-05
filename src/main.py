@@ -1,9 +1,8 @@
 import json
 from random import choice as random_choice, random
-from all_words import all_words
-from species import species
 from klingon_words import klingon_words
-
+from names import names
+from human_words import human_words
 
 class DummyTrek:
     """
@@ -30,18 +29,41 @@ class DummyTrek:
         for field in fields:
             if field == "username":
                 profile["username"] = self.get_username()
-
+            elif field == "email":
+                profile['email'] = self.get_email()
+            elif field == 'first_name':
+                profile['first_name'] = self.get_name('first')
+            elif field == 'last_name':
+                profile['last_name'] = self.get_name('last')
         return profile
 
     def get_username(self) -> str:
         """Return an adjective and a noun in camelCase, representing a username"""
-        return random_choice(species) + random_choice(all_words["nouns"]).capitalize()
+        species = human_words['species']
+        animals = human_words['animals']
+        return random_choice(species) + random_choice(animals)
+
+    def get_email(self):
+        """Return a fake email address
+        
+        e.g. """
+        suffixes = ['com', 'trek', 'edu', 'fed', 'net']
+        return f'{self.get_username()}@sector{int(random() * 100)}.{random_choice(suffixes)}'
+
+    def get_name(self, first_or_last='first'):
+        return random_choice(names[first_or_last])
 
     def ipsum(self, n: int = 30, lang: str = "klingon") -> str:
         """Return a string of n words from specified language (lang)"""
         if lang == "human":
-            pass
-            # words = human_words
+            words = []
+
+            for key, word_list in human_words.items():
+                if key in ['animals']:
+                    continue
+                for word in word_list:
+                    words.append(word)
+
         else:
             words = klingon_words
         text = ""
@@ -49,8 +71,8 @@ class DummyTrek:
             text += random_choice(words)
 
             # the first word should be titleized
-            if len(text.split(" ")) == 1:
-                text = text.title() + " "
+            if i == 0:
+                text = text.capitalize() + " "
             else:
                 # random number between 0 and 1
                 chance = random()
@@ -60,26 +82,32 @@ class DummyTrek:
                     text += "? "
                 elif chance < 0.2:
                     text += ". "
-                elif chance < 0.4:
+                elif chance < 0.3:
                     text += "! "
                 else:
                     text += " "
 
+                word = ''
+                while not word.isalpha():
+                    word = random_choice(words)
+
                 # if punctuation was added,
-                # titleize the next word
-                if chance < 0.4:
-                    text += random_choice(words).title()
+                # capitalize the next word
+                if chance < 0.6:
+                    text += word.capitalize()
                 else:
-                    text += random_choice(words)
+                    text += word.lower()
 
                 # The final character should be !
                 if i == n - 1:
                     text += "!"
+                else:
+                    text += ' '
 
         return text
 
 
 trek = DummyTrek()
 
-print(trek.user_profile(["username"]))
-print(DummyTrek().ipsum(10))
+# print(trek.user_profile(["username", "email", "first_name", "last_name"]))
+print(DummyTrek().ipsum(10, 'human'))
