@@ -1,17 +1,24 @@
-import json
-from random import choice as random_choice, random
-from klingon_words import klingon_words
-from names import names
-from human_words import human_words
+from string import ascii_uppercase as ABCs
+from random import choice as random_choice, random, randint
+from all_words import all_words
 
-class DummyTrek:
+class JSONTrek:
     """
     Star-Trek-themed dummy data generator.
 
-    from DummyTrek import DummyTrek
+    from JSONTrek import JSONTrek
 
-    trek = DummyTrek()
+    trek = JSONTrek()
     """
+    def __init__(self):
+        self.names         = all_words.get('names')
+        self.animals       = all_words.get('animals')
+        self.astro_objs    = all_words.get('astronomical_objects')
+        self.klingon_words = all_words.get('klingon_words')
+        self.names         = all_words.get('names')
+        self.nouns         = all_words.get('nouns')
+        self.occupations   = all_words.get('occupations')
+        self.species       = all_words.get('species')
 
     VALID_FIELDS = [
         "username",
@@ -22,50 +29,98 @@ class DummyTrek:
         "address",
     ]
 
-    def user_profile(self, fields: list) -> dict:
+
+    def user_profile(self, fields: list=VALID_FIELDS) -> dict:
         """Generates random values for each of the given fields in the fields list
         Returns a dictionary of fields and their values"""
         profile = {}
         for field in fields:
             if field == "username":
-                profile["username"] = self.get_username()
+                profile["username"] = self.username()
             elif field == "email":
-                profile['email'] = self.get_email()
+                profile['email'] = self.email()
             elif field == 'first_name':
-                profile['first_name'] = self.get_name('first')
+                profile['first_name'] = self.findName('first')
             elif field == 'last_name':
-                profile['last_name'] = self.get_name('last')
+                profile['last_name'] = self.findName('last')
+            elif field == 'occupation':
+                profile['occupation'] = self.occupation()
         return profile
 
-    def get_username(self) -> str:
+    def username(self) -> str:
         """Return an adjective and a noun in camelCase, representing a username"""
-        species = human_words['species']
-        animals = human_words['animals']
-        return random_choice(species) + random_choice(animals)
 
-    def get_email(self):
+
+        species = self.species.get(random_choice(ABCs))
+        nouns = self.nouns.get(random_choice(ABCs))
+
+
+
+
+        # username starts with a random species name
+        username = random_choice(species)
+
+        # 70% chance of noun, 30% chance of animal
+        if random() > .7:
+            username += random_choice(self.animals)
+        else:
+            username += random_choice(nouns).capitalize()
+
+        return username + str(int(random() * 100))
+
+    def email(self):
         """Return a fake email address
-        
+
         e.g. """
         suffixes = ['com', 'trek', 'edu', 'fed', 'net']
-        return f'{self.get_username()}@sector{int(random() * 100)}.{random_choice(suffixes)}'
+        return f'{self.username()}@sector{int(random() * 100)}.{random_choice(suffixes)}'
 
-    def get_name(self, first_or_last='first'):
-        return random_choice(names[first_or_last])
+    def findName(self, first_or_last:str='first') -> str:
+        '''Choose a random letter and then choose a random first or last name
+        from the list of names using the random letter as a key'''
+        letter = random_choice(ABCs)
+        return random_choice(self.names[first_or_last][letter])
+
+    def occupation(self) -> str:
+        return random_choice(self.occupations[random_choice(ABCs)])
+
+    def address(self) -> str:
+        cardinals = ['N.', 'N.E.', 'E.', 'S.E.', 'S.', 'S.W.', 'W.', 'N.W.']
+        street_types = ['Ave.', 'St.', 'Ln.', 'Ct.', 'Blvd.', 'Way', 'Hwy.']
+
+        address = {
+            'street': '',
+            'city': random_choice(self.astro_objs[random_choice(ABCs)]),
+            'state': random_choice(ABCs) + random_choice(ABCs),
+            'country': random_choice(self.astro_objs[random_choice(ABCs)]),
+            'zipcode': f'{randint(12345, 99999)}-{randint(1000, 9999)}'
+        }
+
+        address['street'] += str(randint(1, 999)) + ' '
+
+        if random() > .7:
+            address['street'] += random_choice(cardinals) + ' '
+
+        address['street'] += random_choice(all_words['species'][random_choice(ABCs)]) + ' '
+        address['street'] += random_choice(street_types) + ' '
+
+
+
+        return address
 
     def ipsum(self, n: int = 30, lang: str = "klingon") -> str:
         """Return a string of n words from specified language (lang)"""
         if lang == "human":
             words = []
 
-            for key, word_list in human_words.items():
+            for key, word_list in all_words.items():
                 if key in ['animals']:
                     continue
                 for word in word_list:
                     words.append(word)
 
         else:
-            words = klingon_words
+            words = all_words['klingon_words']
         text = ""
         for i in range(n):
             text += random_choice(words)
@@ -107,7 +162,9 @@ class DummyTrek:
         return text
 
 
-trek = DummyTrek()
+trek = JSONTrek()
 
-# print(trek.user_profile(["username", "email", "first_name", "last_name"]))
-print(DummyTrek().ipsum(10, 'human'))
+print(trek.user_profile(["username", "email", "first_name", "last_name", "occupation"]))
+# print(JSONTrek().ipsum(10, 'human'))
+
+# print(trek.address())
