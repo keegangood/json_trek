@@ -19,6 +19,7 @@ class JSONTrek:
         self.nouns         = all_words.get('nouns')
         self.occupations   = all_words.get('occupations')
         self.species       = all_words.get('species')
+        self.trek_nouns    = all_words.get('trek_nouns')
 
     VALID_FIELDS = [
         "username",
@@ -108,19 +109,30 @@ class JSONTrek:
 
         return address
 
-    def ipsum(self, n: int = 30, lang: str = "klingon") -> str:
+    def ipsum(self, n: int = 30, lang: str = "human") -> str:
         """Return a string of n words from specified language (lang)"""
-        if lang == "human":
+        if lang == 'klingon':
+            words = all_words['klingon_words']
+
+        elif lang == "human":
+            to_include = ['astronomical_objects', 'species', 'trek_nouns','trek_nouns', 'trek_nouns','trek_nouns']
+
             words = []
 
-            for key, word_list in all_words.items():
-                if key in ['animals']:
-                    continue
-                for word in word_list:
-                    words.append(word)
+            for key in to_include:
 
-        else:
-            words = all_words['klingon_words']
+                # if the value is a list, add all its items to the words list
+                if isinstance(all_words.get(key), list):
+                    words.extend(all_words.get(key))
+
+                # if the value is a dict, add the lists at each letter
+                else:
+                    # loop through alphabet and use each 
+                    # as a key to add the list at that key
+                    for letter in ABCs:
+                        words.extend(all_words[key][letter])
+                        
+            print(sorted(words))
         text = ""
         for i in range(n):
             text += random_choice(words)
@@ -165,6 +177,6 @@ class JSONTrek:
 trek = JSONTrek()
 
 print(trek.user_profile(["username", "email", "first_name", "last_name", "occupation"]))
-# print(JSONTrek().ipsum(10, 'human'))
+print(trek.ipsum())
 
 # print(trek.address())

@@ -36,3 +36,12 @@ trek.user_profile([
 ```
 
 ## Human / Klingon Ipsum
+
+```python
+from json_trek import JSONTrek
+
+trek = JSONTrek()
+
+# ipsum(n: int = 30, lang: str = "human") -> str:
+ipsum = trek.ipsum(30) # generate 30 human words
+```
