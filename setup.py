@@ -11,7 +11,7 @@ setup(
     long_description_content_type="text/markdown",
     author="Keegan Good",
     author_email="keegood8@gmail.com",
-    packages=find_packages(),
+    packages=find_packages('./src'),
     python_requires=">=3.6",
     install_requires=[
     ],
@@ -30,5 +30,8 @@ setup(
         "Topic :: Utilities",
         "Operating System :: OS Independent",
     ],
-    license='MIT'
+    license='MIT',
+    project_urls = {
+        'Source': 'https://github.com/perennialAutodidact/json_trek'
+    },
 )
