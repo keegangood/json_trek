@@ -215,3 +215,5 @@ class JSONTrek:
 
 if __name__=='__main__':
     trek = JSONTrek()
+    print(trek.ipsum(lang='klingon'))
+    print(trek.user_profile())
