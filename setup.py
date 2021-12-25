@@ -4,15 +4,14 @@ with open("README.md") as readme:
     long_description = readme.read()
 
 setup(
-    name="zippy_username",
+    name="json_trek",
     version="1.0.0",
-    description="Quick and easy username generator",
+    description="Generate fake JSON user data and lorem ipsum with a Star Trek theme.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Keegan Good",
     author_email="keegood8@gmail.com",
-    py_modules=['dummy_trek'],
-    packages=find_packages(exclude=[]),
+    packages=find_packages(),
     python_requires=">=3.6",
     install_requires=[
     ],
@@ -22,6 +21,8 @@ setup(
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Environment :: Web Environment",
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
@@ -29,4 +30,5 @@ setup(
         "Topic :: Utilities",
         "Operating System :: OS Independent",
     ],
+    license='MIT'
 )
