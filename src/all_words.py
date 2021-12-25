@@ -3,7 +3,7 @@ import json
 all_words = {}
 
 filenames = ['animals', 'astronomical_objects', 'klingon_words',
-             'names', 'nouns', 'occupations', 'species', 'trek_nouns']
+             'names', 'occupations', 'species', 'trek_nouns']
 
 
 for filename in filenames:
