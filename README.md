@@ -81,7 +81,6 @@ Generate a username consisting of two words and a number.
 
 ```python
 >>> trek.username()
-
 "OrbitalTether35"
 ```
 
