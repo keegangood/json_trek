@@ -4,7 +4,7 @@ with open("README.md") as readme:
     long_description = readme.read()
 
 setup(
-    name="json_trek",
+    name="json-trek",
     version="1.0.1",
     description="Generate fake JSON user data and lorem ipsum with a Star Trek theme.",
     long_description=long_description,
