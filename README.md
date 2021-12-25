@@ -21,7 +21,7 @@ JSON Trek can generate user information for the following categories:
 
 ## Install
 
-`$ pip install json_trek`
+`$ pip install json-trek`
 
 ## Usage
 
@@ -138,11 +138,9 @@ Args:
 
 ```python
 >>> trek.ipsum() # generate 30 human words
-
 "Matter synthesizer? Holosuite hovercar runabout kantare? Kelva ithenite nuubari sensor mundahla taresia narva verdanis combadge ardana lothra leyron argosian. Burke? Xindus varro? Eridanus. Xelatian lyssarian hovercar? Cepheus nakan kurlan valakis shuttlecraft!"
 
 >>> trek.ipsum(10, 'klingon') # generate 10 klingon words
-
 "Cha. Jatlh jajvam duj nenchoh pov jaghmeyjaj? Chack toj posmoh!"
 ```
 
