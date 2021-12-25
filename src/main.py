@@ -2,6 +2,7 @@ from string import ascii_uppercase as ABCs
 from random import choice as random_choice, random, randint
 from all_words import all_words
 
+
 class JSONTrek:
     """
     Star-Trek-themed dummy data generator.
@@ -10,16 +11,17 @@ class JSONTrek:
 
     trek = JSONTrek()
     """
+
     def __init__(self):
-        self.names         = all_words.get('names')
-        self.animals       = all_words.get('animals')
-        self.astro_objs    = all_words.get('astronomical_objects')
+        self.names = all_words.get('names')
+        self.animals = all_words.get('animals')
+        self.astro_objs = all_words.get('astronomical_objects')
         self.klingon_words = all_words.get('klingon_words')
-        self.names         = all_words.get('names')
-        self.nouns         = all_words.get('nouns')
-        self.occupations   = all_words.get('occupations')
-        self.species       = all_words.get('species')
-        self.trek_nouns    = all_words.get('trek_nouns')
+        self.names = all_words.get('names')
+        self.occupations = all_words.get('occupations')
+        self.species = all_words.get('species')
+        self.trek_nouns = all_words.get('trek_nouns')
+        self.all_words = all_words
 
     VALID_FIELDS = [
         "username",
@@ -30,57 +32,76 @@ class JSONTrek:
         "address",
     ]
 
-
-    def user_profile(self, fields: list=VALID_FIELDS) -> dict:
+    def user_profile(self, fields: list = VALID_FIELDS, valid_fields=VALID_FIELDS) -> dict:
         """Generates random values for each of the given fields in the fields list
         Returns a dictionary of fields and their values"""
         profile = {}
+
+        if not isinstance(fields, list):
+            raise TypeError('fields must be a list of strings')
+        elif fields == []:
+            raise ValueError('fields cannot be blank')
+
         for field in fields:
+            if field not in valid_fields:
+                raise ValueError(f'invalid profile field name: {field}')
             if field == "username":
                 profile["username"] = self.username()
             elif field == "email":
                 profile['email'] = self.email()
             elif field == 'first_name':
-                profile['first_name'] = self.findName('first')
+                profile['first_name'] = self.get_name('first')
             elif field == 'last_name':
-                profile['last_name'] = self.findName('last')
+                profile['last_name'] = self.get_name('last')
             elif field == 'occupation':
                 profile['occupation'] = self.occupation()
+            elif field == 'address':
+                profile['address'] = self.address()
         return profile
 
     def username(self) -> str:
         """Return an adjective and a noun in camelCase, representing a username"""
-
-
         species = self.species.get(random_choice(ABCs))
-        nouns = self.nouns.get(random_choice(ABCs))
 
 
+        noun = random_choice(self.trek_nouns).title().split(' ')
 
-
-        # username starts with a random species name
-        username = random_choice(species)
-
-        # 70% chance of noun, 30% chance of animal
-        if random() > .7:
-            username += random_choice(self.animals)
-        else:
-            username += random_choice(nouns).capitalize()
+        username = ''.join(noun)
+        if len(noun) == 1:
+            username = random_choice(species).title() + username
 
         return username + str(int(random() * 100))
 
-    def email(self):
+    def email(self) -> str:
         """Return a fake email address
 
-        e.g. """
-        suffixes = ['com', 'trek', 'edu', 'fed', 'net']
-        return f'{self.username()}@sector{int(random() * 100)}.{random_choice(suffixes)}'
+        e.g. ElaysianSalmon25@sector92.edu"""
+        suffixes = ['com', 'trk', 'edu', 'fed', 'net']
+        return f'{self.username()}@sector{randint(1, 100)}.{random_choice(suffixes)}'
 
-    def findName(self, first_or_last:str='first') -> str:
-        '''Choose a random letter and then choose a random first or last name
-        from the list of names using the random letter as a key'''
-        letter = random_choice(ABCs)
-        return random_choice(self.names[first_or_last][letter])
+    def get_name(self, which_name: str = 'both') -> str:
+        """Choose a random letter and then choose a random first or last name
+        from the list of names using the random letter as a key"""
+
+        if type(which_name) is not str:
+            raise TypeError("'which_name' must be a string")
+
+        if which_name.lower() not in ['first', 'last', 'both']:
+            raise ValueError(
+                "'which_name' must be either 'first', 'last' or 'both'")
+
+
+        if which_name == 'both':
+            letter_first = random_choice(ABCs)
+            letter_last = random_choice(ABCs)
+            first = random_choice(self.names['first'][letter_first])
+            last = random_choice(self.names['last'][letter_last])
+            name = first + ' ' + last
+        else:
+            letter = random_choice(ABCs)
+            name = random_choice(self.names[which_name][letter])
+
+        return name
 
     def occupation(self) -> str:
         return random_choice(self.occupations[random_choice(ABCs)])
@@ -102,20 +123,35 @@ class JSONTrek:
         if random() > .7:
             address['street'] += random_choice(cardinals) + ' '
 
-        address['street'] += random_choice(all_words['species'][random_choice(ABCs)]) + ' '
-        address['street'] += random_choice(street_types) + ' '
-
-
+        address['street'] += random_choice(all_words['species']
+                                           [random_choice(ABCs)]) + ' '
+        address['street'] += random_choice(street_types)
 
         return address
 
     def ipsum(self, n: int = 30, lang: str = "human") -> str:
         """Return a string of n words from specified language (lang)"""
+
+        if type(n) is not int:
+            raise TypeError("'n' must be an integer")
+
+        if n == 0:
+            raise ValueError("'n' cannot be zero")
+
+        elif lang not in ['human', 'klingon'] or type(lang) is not str:
+            raise ValueError("'lang' must be either 'human' or 'klingon'")
+
         if lang == 'klingon':
             words = all_words['klingon_words']
 
         elif lang == "human":
-            to_include = ['astronomical_objects', 'species', 'trek_nouns','trek_nouns', 'trek_nouns','trek_nouns']
+            # the trek_nouns list is significantly shorter 
+            # than the others, so it's added 12 times. lol
+            to_include = ['astronomical_objects', 'species',
+                          'trek_nouns', 'trek_nouns', 'trek_nouns',
+                          'trek_nouns', 'trek_nouns', 'trek_nouns',
+                          'trek_nouns', 'trek_nouns', 'trek_nouns',
+                          'trek_nouns', 'trek_nouns', 'trek_nouns', ]
 
             words = []
 
@@ -127,30 +163,33 @@ class JSONTrek:
 
                 # if the value is a dict, add the lists at each letter
                 else:
-                    # loop through alphabet and use each 
+                    # loop through alphabet and use each
                     # as a key to add the list at that key
                     for letter in ABCs:
                         words.extend(all_words[key][letter])
-                        
-            print(sorted(words))
+
+            # print(sorted(words))
         text = ""
         for i in range(n):
-            text += random_choice(words)
 
             # the first word should be titleized
             if i == 0:
-                text = text.capitalize() + " "
+                text += random_choice(words)
+                text = text.capitalize()
             else:
                 # random number between 0 and 1
                 chance = random()
-
+                punc_added = False
                 # add punctuation based on a random chance
                 if chance < 0.1:
-                    text += "? "
-                elif chance < 0.2:
                     text += ". "
+                    punc_added = True
+                elif chance < 0.2:
+                    text += "? "
+                    punc_added = True
                 elif chance < 0.3:
                     text += "! "
+                    punc_added = True
                 else:
                     text += " "
 
@@ -160,7 +199,7 @@ class JSONTrek:
 
                 # if punctuation was added,
                 # capitalize the next word
-                if chance < 0.6:
+                if punc_added:
                     text += word.capitalize()
                 else:
                     text += word.lower()
@@ -168,15 +207,11 @@ class JSONTrek:
                 # The final character should be !
                 if i == n - 1:
                     text += "!"
-                else:
-                    text += ' '
+                # else:
+                #     if punc_added:
+                #         text += ' '
 
         return text
 
-
-trek = JSONTrek()
-
-print(trek.user_profile(["username", "email", "first_name", "last_name", "occupation"]))
-print(trek.ipsum())
-
-# print(trek.address())
+if __name__=='__main__':
+    trek = JSONTrek()
