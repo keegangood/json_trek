@@ -35,4 +35,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           cd $GITHUB_WORKSPACE
-          python -m unittest tests.py
+          python -m unittest ./tests.py
