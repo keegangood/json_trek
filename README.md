@@ -52,8 +52,8 @@ If called without a list of fields, `user_profile` will generate values for all 
   "username": "CyberneticImplant8",
   "email": "SporeDrive48@sector68.fed",
   "first_name": "Mirab",
-  "last_name": "Templeton",
-  "occupation": "Judge",
+  "last_name": "Zshaar",
+  "occupation": "Xenoanthropologist",
   "address": {
     "street": "665 N. Bomar Hwy.",
     "city": "Nyria III",
