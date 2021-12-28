@@ -32,5 +32,7 @@ jobs:
 
       - name: Install dependencies and run tests
         run: |
-          cd $GITHUB_WORKSPACE
-          python -m unittest tests.py
+          python -m pip install --upgrade pip
+          python setup.py install
+          pip install pytest
+          pytest tests.py
