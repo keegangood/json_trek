@@ -1,5 +1,5 @@
 import unittest
-from main import JSONTrek
+from .main import JSONTrek
 from string import ascii_uppercase as ABCs
 
 
@@ -27,12 +27,12 @@ class TrekTest(unittest.TestCase):
             "address",
         ]
         profile = self.trek.user_profile(fields)
-        self.assertRegex(profile['username'], '\w+\d+')
+        self.assertRegex(profile['username'], r'\w+\d+')
         self.assertRegex(
             profile['email'], r"(^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$)")
-        self.assertRegex(profile['first_name'], '\w+')
-        self.assertRegex(profile['last_name'], '\w+')
-        self.assertRegex(profile['occupation'], '\w+')
+        self.assertRegex(profile['first_name'], r'\w+')
+        self.assertRegex(profile['last_name'], r'\w+')
+        self.assertRegex(profile['occupation'], r'\w+')
 
         self.assertEqual(fields, list(profile.keys()))
 
@@ -40,13 +40,13 @@ class TrekTest(unittest.TestCase):
         for i in range(10000):
             address = self.trek.address()
             self.assertRegex(address['street'],
-                             '\d+[ ](?:[A-Za-z0-9.-]+[ ][\S]+)[\w. ]*')
+                             r'\d+[ ](?:[A-Za-z0-9.-]+[ ][\S]+)[\w. ]*')
 
-            self.assertRegex(address['city'], '\w')
-            self.assertRegex(address['city'], "[A-Za-z-' ]+")
-            self.assertRegex(address['state'], "\w{2}")
-            self.assertRegex(address['country'], "[A-Za-z-' ]+")
-            self.assertRegex(address['zipcode'], "\w{5}-\w{4}")
+            self.assertRegex(address['city'], r'\w')
+            self.assertRegex(address['city'], r"[A-Za-z-' ]+")
+            self.assertRegex(address['state'], r"\w{2}")
+            self.assertRegex(address['country'], r"[A-Za-z-' ]+")
+            self.assertRegex(address['zipcode'], r"\w{5}-\w{4}")
 
         self.assertEqual(['street', 'city', 'state', 'country',
                          'zipcode'], list(address.keys()))
@@ -107,7 +107,7 @@ class TrekTest(unittest.TestCase):
     def test_username(self):
         for i in range(10000):
             username = self.trek.username()
-            self.assertRegex(username, "[A-Z]+[a-z]+[\d]*")
+            self.assertRegex(username, r"[A-Z]+[a-z]+[\d]*")
 
     def test_get_name(self):
         self.assertRaises(TypeError, self.trek.get_name, 123)
