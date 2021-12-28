@@ -1,11 +1,21 @@
+import json
+from pathlib import Path
 from string import ascii_uppercase as ABCs
 from random import choice as random_choice, random, randint
-from all_words import all_words
 
+# default user profile fields
+VALID_FIELDS = [
+    "username",
+    "email",
+    "first_name",
+    "last_name",
+    "occupation",
+    "address",
+]
 
 class JSONTrek:
     """
-    Star-Trek-themed dummy data generator.
+    Star-Trek-themed fake data and lorem ipsum generator for testing and prototyping.
 
     from JSONTrek import JSONTrek
 
@@ -13,24 +23,24 @@ class JSONTrek:
     """
 
     def __init__(self):
-        self.names = all_words.get('names')
-        self.animals = all_words.get('animals')
-        self.astro_objs = all_words.get('astronomical_objects')
-        self.klingon_words = all_words.get('klingon_words')
-        self.names = all_words.get('names')
-        self.occupations = all_words.get('occupations')
-        self.species = all_words.get('species')
-        self.trek_nouns = all_words.get('trek_nouns')
-        self.all_words = all_words
+        filepath = Path(__file__).parent / 'json'
+        self.all_words = {}
+        # loop through all the json files and add the words from each to the all_words dict
+        for filename in filepath.iterdir():
+            stem = filename.stem # *.json
+            filename = str(filename.resolve())
+            with open(filename, 'r') as json_file:
+                self.all_words[stem] = json.load(json_file)
 
-    VALID_FIELDS = [
-        "username",
-        "email",
-        "first_name",
-        "last_name",
-        "occupation",
-        "address",
-    ]
+
+        self.names = self.all_words.get('names')
+        self.animals = self.all_words.get('animals')
+        self.astro_objs = self.all_words.get('astronomical_objects')
+        self.klingon_words = self.all_words.get('klingon_words')
+        self.names = self.all_words.get('names')
+        self.occupations = self.all_words.get('occupations')
+        self.species = self.all_words.get('species')
+        self.trek_nouns = self.all_words.get('trek_nouns')
 
     def user_profile(self, fields: list = VALID_FIELDS, valid_fields=VALID_FIELDS) -> dict:
         """Generates random values for each of the given fields in the fields list
@@ -63,7 +73,6 @@ class JSONTrek:
         """Return an adjective and a noun in camelCase, representing a username"""
         species = self.species.get(random_choice(ABCs))
 
-
         noun = random_choice(self.trek_nouns).title().split(' ')
 
         username = ''.join(noun)
@@ -89,7 +98,6 @@ class JSONTrek:
         if which_name.lower() not in ['first', 'last', 'both']:
             raise ValueError(
                 "'which_name' must be either 'first', 'last' or 'both'")
-
 
         if which_name == 'both':
             letter_first = random_choice(ABCs)
@@ -123,7 +131,7 @@ class JSONTrek:
         if random() > .7:
             address['street'] += random_choice(cardinals) + ' '
 
-        address['street'] += random_choice(all_words['species']
+        address['street'] += random_choice(self.all_words['species']
                                            [random_choice(ABCs)]) + ' '
         address['street'] += random_choice(street_types)
 
@@ -142,10 +150,10 @@ class JSONTrek:
             raise ValueError("'lang' must be either 'human' or 'klingon'")
 
         if lang == 'klingon':
-            words = all_words['klingon_words']
+            words = self.all_words['klingon_words']
 
         elif lang == "human":
-            # the trek_nouns list is significantly shorter 
+            # the trek_nouns list is significantly shorter
             # than the others, so it's added 12 times. lol
             to_include = ['astronomical_objects', 'species',
                           'trek_nouns', 'trek_nouns', 'trek_nouns',
@@ -158,15 +166,15 @@ class JSONTrek:
             for key in to_include:
 
                 # if the value is a list, add all its items to the words list
-                if isinstance(all_words.get(key), list):
-                    words.extend(all_words.get(key))
+                if isinstance(self.all_words.get(key), list):
+                    words.extend(self.all_words.get(key))
 
                 # if the value is a dict, add the lists at each letter
                 else:
                     # loop through alphabet and use each
                     # as a key to add the list at that key
                     for letter in ABCs:
-                        words.extend(all_words[key][letter])
+                        words.extend(self.all_words[key][letter])
 
             # print(sorted(words))
         text = ""
@@ -213,7 +221,8 @@ class JSONTrek:
 
         return text
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     trek = JSONTrek()
     print(trek.ipsum(lang='klingon'))
     print(trek.user_profile())
