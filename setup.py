@@ -5,20 +5,21 @@ with open("README.md") as readme:
 
 setup(
     name="json_trek",
-    version="1.0.0",
+    version="1.0.1",
     description="Generate fake JSON user data and lorem ipsum with a Star Trek theme.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     author="Keegan Good",
     author_email="keegood8@gmail.com",
-    packages=find_packages('./src'),
-    package_data={'json': ['src/json/*']},
+    packages=find_packages(),
+    package_data={'': ['json/*.json']},
     include_package_data=True,
+    py_modules=['main'],
     python_requires=">=3.6",
     install_requires=[
     ],
     classifiers=[
-        "Development Status :: 4 - Beta",
+        "Development Status :: 5 - Production/Stable",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
