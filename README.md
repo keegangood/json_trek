@@ -3,7 +3,7 @@
 
 Generate fake JSON user data and lorem ipsum with a Star Trek theme.
 
-![](https://github.com/MyName/json_trek/workflows/Project%20Tests/badge.svg)
+[![CI](https://github.com/perennialAutodidact/json_trek/actions/workflows/ci.yml/badge.svg)](https://github.com/perennialAutodidact/json_trek/actions/workflows/ci.yml)
 ## Fake User Data
 
 JSON Trek can generate user information for the following categories:
