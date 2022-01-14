@@ -5,7 +5,7 @@ with open("README.md") as readme:
 
 setup(
     name="json_trek",
-    version="1.0.8d",
+    version="1.0.8e",
     description="Generate fake JSON user data and lorem ipsum with a Star Trek theme.",
     long_description=long_description,
     long_description_content_type="text/markdown",

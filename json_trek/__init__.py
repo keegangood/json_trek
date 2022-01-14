@@ -1,2 +1,2 @@
 from .main import JSONTrek
-version='1.0.8d'
+version='1.0.8e'
