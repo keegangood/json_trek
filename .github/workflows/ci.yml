@@ -52,6 +52,7 @@ jobs:
           --outdir dist/
 
       - name: Publish distribution 📦 to Test PyPI
+        if: startsWith(github.ref, 'refs/remotes/')
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.JSON_TREK_TEST_PYPI_API_TOKEN }}
