@@ -131,7 +131,7 @@ Generate an address with values for street, city, state, country and zipcode.
 ## ipsum(n: int = 30, lang: str = 'human')
 
 Args:
-- `n` - minimum number of words to generate (some words come as pairs so the final string might be more than `n` words.)
+- `n` - minimum number of words to generate (some words come as pairs so the final string might be slightly more than `n` words.)
 - `lang` - language in which to generate lorem ipsum text
   - `'human'` (default)
   - `'klingon'`
