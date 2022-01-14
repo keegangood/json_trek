@@ -140,6 +140,9 @@ Args:
 >>> trek.ipsum() # generate 30 human words
 "Matter synthesizer? Holosuite hovercar runabout kantare? Kelva ithenite nuubari sensor mundahla taresia narva verdanis combadge ardana lothra leyron argosian. Burke? Xindus varro? Eridanus. Xelatian lyssarian hovercar? Cepheus nakan kurlan valakis shuttlecraft!"
 
+>>> trek.ipsum(10) # generate 10 human words
+'Tesnian iconian romulan holosuite suliban debrune. Therbia combadge! Narva nanoprobe!'
+
 >>> trek.ipsum(10, 'klingon') # generate 10 klingon words
 "Cha. Jatlh jajvam duj nenchoh pov jaghmeyjaj? Chack toj posmoh!"
 ```
