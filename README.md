@@ -30,7 +30,8 @@ JSON Trek can generate user information for the following categories:
 >>> from json_trek import JSONTrek
 
 >>> trek = JSONTrek()
-```
+```  
+
 
 ## Methods
 ## user_profile(fields: list)
