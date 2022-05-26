@@ -1,6 +1,9 @@
 # JSON Trek
 ## Star-Trek-flavored JSON data
 
+<img src="./json_trek_banner.png" width=600 alt='JSONTrek banner'/>
+
+
 Generate fake JSON user data and lorem ipsum with a Star Trek theme.
 
 [![CI](https://github.com/perennialAutodidact/json_trek/actions/workflows/ci.yml/badge.svg)](https://github.com/perennialAutodidact/json_trek/actions/workflows/ci.yml)
